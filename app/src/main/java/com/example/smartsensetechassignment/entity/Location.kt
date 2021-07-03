@@ -9,7 +9,7 @@ import java.io.Serializable
 class LocationEntity(var latitudeCheckin:String,
                 var longitudeCheckin:String):Serializable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     var timeOfCheckin:String = ""
 
 }

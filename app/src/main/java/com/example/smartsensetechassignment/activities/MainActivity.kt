@@ -106,9 +106,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         Toast.makeText(this,"Click Floating Button to Checkin",Toast.LENGTH_SHORT).show()
         map=googleMap
-//        val sydney=LatLng(-34.0,151.0)
-//        map.addMarker(MarkerOptions().position(sydney).title("Markey in Sydney"))
-//        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
         map.uiSettings.apply {
             isCompassEnabled=true
             isMyLocationButtonEnabled=true
@@ -133,7 +130,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         val calendar: Calendar = Calendar.getInstance()
                         val dateformat:SimpleDateFormat= SimpleDateFormat("MM-dd-yyyy" + "\n" + "HH:mm:ss a")
                         val time:String=dateformat.format(calendar.time)
-                        checkinTime.text=time
+                        checkinTime.text="Checked in on: " + time
 
                         locationViewModel.allLocationData.observe(this, androidx.lifecycle.Observer {
 
