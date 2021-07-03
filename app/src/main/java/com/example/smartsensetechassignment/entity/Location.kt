@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "Location")
-class Location(var latitude:String,
-                var longitude:String):Serializable {
+class Location(var latitude:Long,
+                var longitude:Long):Serializable {
 
     @PrimaryKey(autoGenerate = true)
     var timeOfCheckin:Long = 0
