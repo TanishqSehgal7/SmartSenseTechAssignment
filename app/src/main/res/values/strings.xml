@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartSenseTechAssignment</string>
+    <string name="google_maps_api_key">AIzaSyBGmM1a6KQP0gc8WXQtD8fVbev7dLGEeck</string>
 </resources>

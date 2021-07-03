@@ -8,6 +8,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/location_data_layout"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:orientation="horizontal"
@@ -65,13 +66,14 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"/>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/LocationHistory"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
+                android:padding="5dp"
                 android:src="@drawable/ic_baseline_history_24"
                 android:background="@drawable/history_btn_bg"
                 android:layout_alignParentEnd="true"
@@ -90,5 +92,16 @@
         android:layout_marginBottom="50dp"
         android:layout_marginEnd="30dp"
         android:src="@drawable/ic_baseline_location_on_24"/>
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        android:layout_below="@+id/location_data_layout"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
 
 </RelativeLayout>

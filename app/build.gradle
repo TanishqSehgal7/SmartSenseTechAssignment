@@ -1,8 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
 }
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.android.application'
 android {
     compileSdkVersion 30
 
@@ -87,6 +90,10 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+
+    // google play services dependency
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
 
 }
