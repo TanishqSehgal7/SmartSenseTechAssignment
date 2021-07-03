@@ -2,13 +2,13 @@ package com.example.smartsensetechassignment.Repository
 
 import androidx.lifecycle.LiveData
 import com.example.smartsensetechassignment.DAO.LocationDao
-import com.example.smartsensetechassignment.entity.Location
+import com.example.smartsensetechassignment.entity.LocationEntity
 
 class LocationRepository(private val locationDao: LocationDao) {
 
-    val locationData:LiveData<List<Location>> = locationDao.getLocationData()
+    val locationData:LiveData<List<LocationEntity>> = locationDao.getLocationData()
 
-    suspend fun insertLocationData(location: Location){
+    suspend fun insertLocationData(location: LocationEntity){
         locationDao.insertNewLocationData(location)
     }
 

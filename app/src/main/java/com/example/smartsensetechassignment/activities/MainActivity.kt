@@ -1,26 +1,33 @@
 package com.example.smartsensetechassignment.activities
 
-import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.smartsensetechassignment.R
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
+import com.example.smartsensetechassignment.ViewModel.LocationViewModel
+import com.example.smartsensetechassignment.entity.LocationEntity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import java.util.jar.Manifest
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -31,11 +38,22 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     var isGranted:Boolean=false
     private lateinit var map:GoogleMap
     private val PERMISSION_REQ_CODE=1234
-
+    private lateinit var fusedLocationProviderClient:FusedLocationProviderClient
+    lateinit var checkin:FloatingActionButton
+    lateinit var latitudeTv:TextView
+    lateinit var longitudeTV:TextView
+    lateinit var checkinTime:TextView
+    lateinit var locationViewModel:LocationViewModel
+    lateinit var locationEntity: LocationEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        checkin=findViewById(R.id.checkin)
+        latitudeTv=findViewById(R.id.Latitude)
+        longitudeTV=findViewById(R.id.Longitude)
+        checkinTime=findViewById(R.id.checkIntime)
 
         val history:ImageView=findViewById(R.id.LocationHistory)
         history.setOnClickListener {
@@ -43,7 +61,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
         // set up Support Fragment Manager
-
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -62,6 +79,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, permissionCheckArray, PERMISSION_REQ_CODE)
         }
 
+        // initialize viewmodel to store data
+        locationViewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(LocationViewModel::class.java)
     }
 
 //    fun CheckIfServiceAvailable() :Boolean {
@@ -85,11 +104,58 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 //    }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        Toast.makeText(this,"Map is Loaded",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,"Click Floating Button to Checkin",Toast.LENGTH_SHORT).show()
         map=googleMap
-        val sydney=LatLng(-34.0,151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Markey in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+//        val sydney=LatLng(-34.0,151.0)
+//        map.addMarker(MarkerOptions().position(sydney).title("Markey in Sydney"))
+//        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        map.uiSettings.apply {
+            isCompassEnabled=true
+            isMyLocationButtonEnabled=true
+        }
+
+        checkin.setOnClickListener {
+            fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(this)
+
+            if (ContextCompat.checkSelfPermission(this,MY_CORASE_LOCTION)==
+                PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,MY_CORASE_LOCTION)==
+                PackageManager.PERMISSION_GRANTED) {
+                val locationTask=fusedLocationProviderClient.lastLocation
+                locationTask.addOnCompleteListener(OnCompleteListener<Location?> { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "onComplete: found location!")
+                        val currentLocation = task.result as Location
+                        val locationOnMap=LatLng(currentLocation.latitude,currentLocation.longitude)
+                        map.addMarker(MarkerOptions().position(locationOnMap).title("My Current Location"))
+                        map.moveCamera(CameraUpdateFactory.newLatLng(locationOnMap))
+                        latitudeTv.text=currentLocation.latitude.toString()
+                        longitudeTV.text=currentLocation.longitude.toString()
+                        val calendar: Calendar = Calendar.getInstance()
+                        val dateformat:SimpleDateFormat= SimpleDateFormat("MM-dd-yyyy" + "\n" + "HH:mm:ss a")
+                        val time:String=dateformat.format(calendar.time)
+                        checkinTime.text=time
+
+                        locationViewModel.allLocationData.observe(this, androidx.lifecycle.Observer {
+
+                        })
+                        locationEntity= LocationEntity(currentLocation.latitude.toString(),currentLocation.longitude.toString())
+                        locationEntity.timeOfCheckin=time
+                        locationViewModel.insertLocationData(locationEntity)
+
+                    } else {
+                        Log.d(TAG, "onComplete: current location is null")
+                        Toast.makeText(
+                            this,
+                            "unable to get current location",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
+            }
+
+        }
+
+
     }
 
     override fun onRequestPermissionsResult(

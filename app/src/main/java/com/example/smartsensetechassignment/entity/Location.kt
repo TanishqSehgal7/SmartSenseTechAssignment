@@ -2,13 +2,14 @@ package com.example.smartsensetechassignment.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
 import java.io.Serializable
 
-@Entity(tableName = "Location")
-class Location(var latitude:Long,
-                var longitude:Long):Serializable {
+@Entity(tableName = "CheckinLocation")
+class LocationEntity(var latitudeCheckin:String,
+                var longitudeCheckin:String):Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    var timeOfCheckin:Long = 0
+    var timeOfCheckin:String = ""
 
 }

@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.smartsensetechassignment.DAO.LocationDao
-import com.example.smartsensetechassignment.entity.Location
+import com.example.smartsensetechassignment.entity.LocationEntity
 
-@Database(entities = arrayOf(Location::class), exportSchema = false , version = 1)
+@Database(entities = arrayOf(LocationEntity::class), exportSchema = false , version = 2)
 abstract class LocationDatabase: RoomDatabase() {
 
     abstract fun getLocationDataDao(): LocationDao

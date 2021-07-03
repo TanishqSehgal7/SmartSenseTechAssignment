@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.smartsensetechassignment.DAO.LocationDao
 import com.example.smartsensetechassignment.Database.LocationDatabase
 import com.example.smartsensetechassignment.Repository.LocationRepository
-import com.example.smartsensetechassignment.entity.Location
+import com.example.smartsensetechassignment.entity.LocationEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LocationViewModel(application: Application): AndroidViewModel(application)  {
 
-    val allLocationData: LiveData<List<Location>>
+    val allLocationData: LiveData<List<LocationEntity>>
     private val locationRepository:LocationRepository
 
     init {
@@ -22,7 +22,7 @@ class LocationViewModel(application: Application): AndroidViewModel(application)
         allLocationData=locationRepository.locationData
     }
 
-    fun insertLocationData(location: Location) = viewModelScope.launch (Dispatchers.IO) {
+    fun insertLocationData(location: LocationEntity) = viewModelScope.launch (Dispatchers.IO) {
         locationRepository.insertLocationData(location)
     }
 

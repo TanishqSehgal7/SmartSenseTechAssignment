@@ -57,6 +57,7 @@
                 android:layout_marginTop="20dp"/>
 
             <TextView
+                android:id="@+id/checkIntime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Checked in at:00:00:00"
@@ -84,6 +85,7 @@
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/checkin"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:backgroundTint="@color/purple_500"

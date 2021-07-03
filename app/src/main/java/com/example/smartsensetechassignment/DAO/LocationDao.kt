@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.smartsensetechassignment.entity.Location
+import com.example.smartsensetechassignment.entity.LocationEntity
 
 @Dao
 interface LocationDao {
 
-    @Query("SELECT * FROM Location ORDER BY timeOfCheckin DESC")
-    fun getLocationData(): LiveData<List<Location>>
+    @Query("SELECT * FROM CheckinLocation ORDER BY timeOfCheckin DESC")
+    fun getLocationData(): LiveData<List<LocationEntity>>
 
     @Insert
-    suspend fun insertNewLocationData(location: Location)
+    suspend fun insertNewLocationData(location: LocationEntity)
 }
