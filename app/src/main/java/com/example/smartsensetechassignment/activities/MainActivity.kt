@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -32,14 +33,13 @@ import java.util.*
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val TAG:String="MainActivity"
-    private val ERROR_DIAOG_REQUEST:Int=9001
     private val MY_FINE_LOCATION:String=android.Manifest.permission.ACCESS_FINE_LOCATION
     private val MY_CORASE_LOCTION:String=android.Manifest.permission.ACCESS_COARSE_LOCATION
     var isGranted:Boolean=false
     private lateinit var map:GoogleMap
     private val PERMISSION_REQ_CODE=1234
     private lateinit var fusedLocationProviderClient:FusedLocationProviderClient
-    lateinit var checkin:FloatingActionButton
+    lateinit var checkin:Button
     lateinit var latitudeTv:TextView
     lateinit var longitudeTV:TextView
     lateinit var checkinTime:TextView
@@ -83,28 +83,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         locationViewModel=ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(LocationViewModel::class.java)
     }
 
-//    fun CheckIfServiceAvailable() :Boolean {
-//        Log.d(TAG,"isServicesAvailable: checking google services version")
-//        val checkAvailability=GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
-//
-//        if (checkAvailability==ConnectionResult.SUCCESS) {
-//            // all the things are working fine
-//            Log.d(TAG,"isServicesAvailable: Google Play Services Working fine")
-//            return true
-//        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(checkAvailability)) {
-//            // fixable issue
-//            Log.d(TAG,"isServicesAvailable: There is an error but we can fix it!")
-//            val dialog: Dialog =GoogleApiAvailability.getInstance().getErrorDialog(this,checkAvailability,ERROR_DIAOG_REQUEST)
-//            dialog.show()
-//        } else {
-//            Toast.makeText(this, "Cannot connect to the google maps service!",Toast.LENGTH_SHORT).show()
-//        }
-//
-//        return true
-//    }
-
     override fun onMapReady(googleMap: GoogleMap) {
-        Toast.makeText(this,"Click Floating Button to Checkin",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,"Click Button to Checkin at your location",Toast.LENGTH_SHORT).show()
         map=googleMap
         map.uiSettings.apply {
             isCompassEnabled=true
@@ -125,8 +105,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         val locationOnMap=LatLng(currentLocation.latitude,currentLocation.longitude)
                         map.addMarker(MarkerOptions().position(locationOnMap).title("My Current Location"))
                         map.moveCamera(CameraUpdateFactory.newLatLng(locationOnMap))
-                        latitudeTv.text=currentLocation.latitude.toString()
-                        longitudeTV.text=currentLocation.longitude.toString()
+                        latitudeTv.text="Latitude: " + currentLocation.latitude.toString()
+                        longitudeTV.text="Longitude: " + currentLocation.longitude.toString()
                         val calendar: Calendar = Calendar.getInstance()
                         val dateformat:SimpleDateFormat= SimpleDateFormat("MM-dd-yyyy" + "\n" + "HH:mm:ss a")
                         val time:String=dateformat.format(calendar.time)

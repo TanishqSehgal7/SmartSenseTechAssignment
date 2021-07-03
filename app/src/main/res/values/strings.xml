@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">SmartSenseTechAssignment</string>
     <string name="google_maps_api_key">AIzaSyBGmM1a6KQP0gc8WXQtD8fVbev7dLGEeck</string>
+    <string name="my_checkin_history">My Checkin History</string>
+    <string name="latitude">Latitude:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="checked_in_on">Checked in on:</string>
+    <string name="check_in_with_location">Check-In With Location</string>
 </resources>
